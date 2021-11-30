@@ -2,7 +2,7 @@
 	"id": "obsidian-graphviz",
 	"name": "Obsidian Graphviz",
 	"version": "1.0.0",
-	"minAppVersion": "0.12.0",
+	"minAppVersion": "0.11.5",
 	"description": "Render Graphviz Diagrams",
 	"author": "Feng Peng",
 	"authorUrl": "https://QAMichaelPeng.github.io",
