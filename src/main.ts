@@ -9,20 +9,20 @@ export default class GraphvizPlugin extends Plugin {
   settings: GraphvizSettings;
 
   async onload() {
-    console.log('Load graphviz plugin')
+    console.debug('Load graphviz plugin')
     await this.loadSettings();
     this.addSettingTab(new GraphvizSettingsTab(this));
     const processors = new Processors(this);
     const imageProcessorDebounce = (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
       processors.imageProcessor(source, el, ctx);
     }
-    console.log('add processor for dot');
+    console.debug('add processor for dot');
     this.registerMarkdownCodeBlockProcessor('dot', imageProcessorDebounce)
 
   }
 
   onunload() {
-    console.log('Unload graphviz plugin')
+    console.debug('Unload graphviz plugin')
   }
 
   async loadSettings(): Promise<void> {

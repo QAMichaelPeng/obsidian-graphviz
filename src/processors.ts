@@ -17,7 +17,7 @@ export class Processors {
     const cmdPath = this.plugin.settings.dotPath;
     const parameters = [ '-Tpng', sourceFile ];
 
-    console.log(`starting dot process ${cmdPath}, ${parameters}`);
+    console.debug(`starting dot process ${cmdPath}, ${parameters}`);
     const dotProcess = spawn(cmdPath, parameters);
     const outData: Array<Uint8Array> = [];
     let errData = '';
@@ -71,7 +71,7 @@ export class Processors {
   }
 
   public imageProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): void {
-    console.log('Call image processor');
+    console.debug('Call image processor');
 //make sure url is defined. once the setting gets reset to default, an empty string will be returned by settings
     this.convertToPng(source, function (pngData) {
       const mime = 'image/png';
