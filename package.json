@@ -1,6 +1,6 @@
 {
   "name": "obsidian-graphviz",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Graphviz rendering for obsidian md",
   "main": "main.js",
   "scripts": {
