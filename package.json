@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "npm run lint && node esbuild.config.mjs production",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts --ext .json"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +18,13 @@
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "@types/tmp": "^0.2.2",
+    "eslint-plugin-json": "2.1.2",
     "builtin-modules": "^3.2.0",
     "esbuild": "0.13.12",
     "obsidian": "^0.12.17",
     "tslib": "2.3.1",
     "typescript": "4.4.4",
+    "eslint": "7.20.0",
     "tmp": "0.2.1"
   }
 }

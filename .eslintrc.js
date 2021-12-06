@@ -21,4 +21,13 @@ module.exports = {
       "single"
     ]
   },
+  overrides: [
+    {
+      "files": [ "*.json" ],
+      "rules": {
+        "quotes": [ "error", "double" ],
+        "indent": [ "error", 2 ]
+      }
+    }
+  ]
 };
