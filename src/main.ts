@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext, Plugin } from 'obsidian';
+import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, GraphvizSettings, GraphvizSettingsTab } from './setting';
 import { Processors } from './processors';
 
@@ -9,24 +9,21 @@ export default class GraphvizPlugin extends Plugin {
   settings: GraphvizSettings;
 
   async onload() {
-    console.debug('Load graphviz plugin')
+    console.debug('Load graphviz plugin');
     await this.loadSettings();
     this.addSettingTab(new GraphvizSettingsTab(this));
     const processors = new Processors(this);
-    const imageProcessorDebounce = (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-      processors.imageProcessor(source, el, ctx);
-    }
     console.debug('add processor for dot');
-    this.registerMarkdownCodeBlockProcessor('dot', imageProcessorDebounce)
-
+    this.registerMarkdownCodeBlockProcessor('dot', processors.imageProcessor.bind(processors));
   }
 
   onunload() {
-    console.debug('Unload graphviz plugin')
+    console.debug('Unload graphviz plugin');
   }
 
   async loadSettings(): Promise<void> {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    return Promise.resolve();
   }
 
 

@@ -7,7 +7,7 @@ export interface GraphvizSettings {
 
 export const DEFAULT_SETTINGS: GraphvizSettings = {
   dotPath: 'dot',
-}
+};
 
 export class GraphvizSettingsTab extends PluginSettingTab {
   plugin: GraphvizPlugin;
