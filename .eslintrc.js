@@ -19,14 +19,19 @@ module.exports = {
     "quotes": [
       "error",
       "single"
+    ],
+    "semi": [
+      "error",
+      "always"
     ]
   },
   overrides: [
     {
-      "files": [ "*.json" ],
+      "files": ["*.json"],
       "rules": {
-        "quotes": [ "error", "double" ],
-        "indent": [ "error", 2 ]
+        "quotes": ["error", "double"],
+        "indent": ["error", 2],
+        "semi": ["error", "never"]
       }
     }
   ]
