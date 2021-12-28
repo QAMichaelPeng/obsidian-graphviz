@@ -66,23 +66,24 @@ export class Processors {
     });
   }
 
-  public imageProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): Promise<void> {
-    console.debug('Call image processor');
-//make sure url is defined. once the setting gets reset to default, an empty string will be returned by settings
-    return this.convertToPng(source).then(pngData => {
+  public async imageProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): Promise<void> {
+    try {
+      console.debug('Call image processor');
+      //make sure url is defined. once the setting gets reset to default, an empty string will be returned by settings
+      const pngData = await this.convertToPng(source);
       const blob = new Blob([ pngData ], {'type': 'image/png'});
       const url = window.URL || window.webkitURL;
       const blobUrl = url.createObjectURL(blob);
       const img = document.createElement('img');
       img.src = blobUrl;
       el.appendChild(img);
-    }).catch((errMessage: string) => {
+    } catch (errMessage) {
       console.error('convert to png error', errMessage);
       const pre = document.createElement('pre');
       const code = document.createElement('code');
       pre.appendChild(code);
       code.setText(errMessage);
       el.appendChild(pre);
-    });
+    }
   }
 }
