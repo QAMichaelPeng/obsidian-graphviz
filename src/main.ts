@@ -13,9 +13,28 @@ export default class GraphvizPlugin extends Plugin {
     await this.loadSettings();
     this.addSettingTab(new GraphvizSettingsTab(this));
     const processors = new Processors(this);
-    console.debug('add processor for dot');
-    this.registerMarkdownCodeBlockProcessor('dot', processors.imageProcessor.bind(processors));
+    const d3Sources = ['https://d3js.org/d3.v5.min.js',
+      'https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js',
+      'https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js'];
+
+
+    this.app.workspace.onLayoutReady(() => {
+      switch (this.settings.renderer) {
+        case 'd3_graphviz':
+          for (const src of d3Sources) {
+            const script = document.createElement('script');
+            script.src = src;
+            (document.head || document.documentElement).appendChild(script);
+          }
+          this.registerMarkdownCodeBlockProcessor('dot', processors.d3graphvizProcessor.bind(processors));
+          break;
+        default:
+          this.registerMarkdownCodeBlockProcessor('dot', processors.imageProcessor.bind(processors));
+      }
+    });
   }
+
+
 
   onunload() {
     console.debug('Unload graphviz plugin');

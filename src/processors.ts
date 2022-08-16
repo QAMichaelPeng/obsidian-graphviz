@@ -2,7 +2,9 @@ import { MarkdownPostProcessorContext } from 'obsidian';
 import * as tmp from 'tmp';
 import * as fs from 'fs';
 import { spawn } from 'child_process';
+import { createHash } from 'crypto';
 import GraphvizPlugin from './main';
+// import {graphviz} from 'd3-graphviz'; => does not work, ideas how to embed d3 into the plugin?
 
 export class Processors {
   plugin: GraphvizPlugin;
@@ -86,4 +88,28 @@ export class Processors {
       el.appendChild(pre);
     }
   }
+  
+  public async d3graphvizProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): Promise<void> {
+    console.debug('Call d3graphvizProcessor');
+    const div = document.createElement('div');
+    const graphId = 'd3graph_' + createHash('md5').update(source).digest('hex').substring(0, 6);
+    div.setAttr('id', graphId);
+    div.setAttr('style', 'text-align: center');
+    el.appendChild(div);
+    const script = document.createElement('script');
+    // graphviz(graphId).renderDot(source); => does not work, ideas how to use it?
+    // Besides, sometimes d3 is undefined, so there must be a proper way to integrate d3.
+    script.text =
+      `if( typeof d3 != 'undefined') { 
+        d3.select("#${graphId}").graphviz()
+        .onerror(d3error)
+       .renderDot(\`${source}\`);
+       }
+    function d3error (err) {
+        d3.select("#${graphId}").html(\`<div class="d3graphvizError"> d3.graphviz(): \`+err.toString()+\`</div>\`);
+        console.error('Caught error on ${graphId}: ', err);
+    }
+  `;
+    el.appendChild(script);
+}
 }

@@ -3,10 +3,12 @@ import GraphvizPlugin from './main';
 
 export interface GraphvizSettings {
   dotPath: string;
+  renderer: string;
 }
 
 export const DEFAULT_SETTINGS: GraphvizSettings = {
   dotPath: 'dot',
+  renderer: 'dot'
 };
 
 export class GraphvizSettingsTab extends PluginSettingTab {
@@ -21,6 +23,18 @@ export class GraphvizSettingsTab extends PluginSettingTab {
     const {containerEl} = this;
 
     containerEl.empty();
+
+    new Setting(containerEl)
+    .setName('Graphviz renderer')
+    .setDesc('Please choose the Graphviz renderer, after that, you will need to restart obsidian.')
+    .addDropdown(dropdown => dropdown
+      .addOption('dot', 'dot')
+      .addOption('d3_graphviz', 'D3 Graphviz (experimental)')
+      .setValue(this.plugin.settings.renderer)
+      .onChange(async (value) => {
+        this.plugin.settings.renderer = value;
+        await this.plugin.saveSettings();
+      }));
 
     new Setting(containerEl).setName('Dot Path')
       .setDesc('Dot executable path')
