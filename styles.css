@@ -1,3 +1,4 @@
-/* Sets all the text color to red! */
-body {
+.d3graphvizError{
+  color: red;
+  border: 1px solid red;
 }
