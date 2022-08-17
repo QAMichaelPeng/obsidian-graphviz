@@ -99,17 +99,17 @@ export class Processors {
     const script = document.createElement('script');
     // graphviz(graphId).renderDot(source); => does not work, ideas how to use it?
     // Besides, sometimes d3 is undefined, so there must be a proper way to integrate d3.
+    const escapedSource = source.replaceAll('`','\\`');
     script.text =
       `if( typeof d3 != 'undefined') { 
         d3.select("#${graphId}").graphviz()
         .onerror(d3error)
-       .renderDot(\`${source}\`);
-       }
+       .renderDot(\`${escapedSource}\`);
+    }
     function d3error (err) {
         d3.select("#${graphId}").html(\`<div class="d3graphvizError"> d3.graphviz(): \`+err.toString()+\`</div>\`);
         console.error('Caught error on ${graphId}: ', err);
-    }
-  `;
+    }`;
     el.appendChild(script);
-}
+  }
 }
