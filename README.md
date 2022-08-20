@@ -73,7 +73,7 @@ npm i
 VAULT_FOLDER=<Your vault folder>
 PLUGIN_FOLDER=$VAULT_FOLDER/.obsidian/plugins/obisidan-graph-viz
 [ -d "$PLUGIN_FOLDER" ] || mkdir -p $PLUGIN_FOLDER
-npm run build && cp  ./{main.js,style.css,manifest.json}/* $PLUGIN_FOLDER
+npm run build && cp  ./{main.js,styles.css,manifest.json} $PLUGIN_FOLDER
 ```
 
 
