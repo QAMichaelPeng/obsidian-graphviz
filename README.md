@@ -79,3 +79,11 @@ npm run build && cp  ./{main.js,styles.css,manifest.json} $PLUGIN_FOLDER
 
 ## Credits
 - Inspired by Johannes Theiner's **[obsidian-plantuml](https://github.com/joethei/obsidian-plantuml)**.
+
+
+## Authors
+Feng Peng(@QAMichaelPeng)
+
+With contributions from
+- Dos Santos(@d0ssant0s)
+- ebdavison(@ebdavison)
