@@ -51,7 +51,7 @@ export class GraphvizSettingsTab extends PluginSettingTab {
 
 	new Setting(containerEl)
     .setName('Image format')
-    .setDesc('Dot output format.')
+    .setDesc('Graphviz output format.')
     .addDropdown(dropdown => dropdown
       .addOption('png', 'png')
       .addOption('svg', 'svg')
