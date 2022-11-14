@@ -4,11 +4,13 @@ import GraphvizPlugin from './main';
 export interface GraphvizSettings {
   dotPath: string;
   renderer: string;
+  imageFormat: string;
 }
 
 export const DEFAULT_SETTINGS: GraphvizSettings = {
   dotPath: 'dot',
-  renderer: 'dot'
+  renderer: 'dot',
+  imageFormat: 'png'
 };
 
 export class GraphvizSettingsTab extends PluginSettingTab {
@@ -46,5 +48,17 @@ export class GraphvizSettingsTab extends PluginSettingTab {
           }
         )
       );
+
+	new Setting(containerEl)
+    .setName('Image format')
+    .setDesc('Dot output format.')
+    .addDropdown(dropdown => dropdown
+      .addOption('png', 'png')
+      .addOption('svg', 'svg')
+      .setValue(this.plugin.settings.imageFormat)
+      .onChange(async (value) => {
+        this.plugin.settings.imageFormat = value;
+        await this.plugin.saveSettings();
+      }));
   }
 }

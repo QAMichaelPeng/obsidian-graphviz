@@ -12,11 +12,17 @@ export class Processors {
   constructor(plugin: GraphvizPlugin) {
     this.plugin = plugin;
   }
+  
+  imageMimeType = new Map<string, string>([
+        ['png', 'image/png'],
+        ['svg', 'image/svg+xml']
+    ]);
 
   private async writeDotFile(sourceFile: string): Promise<Uint8Array> {
     return new Promise<Uint8Array>((resolve, reject) => {
       const cmdPath = this.plugin.settings.dotPath;
-      const parameters = [ '-Tpng', sourceFile ];
+      const imageFormat = this.plugin.settings.imageFormat;
+      const parameters = [ `-T${imageFormat}`, sourceFile ];
 
       console.debug(`Starting dot process ${cmdPath}, ${parameters}`);
       const dotProcess = spawn(cmdPath, parameters);
@@ -43,7 +49,7 @@ export class Processors {
     });
   }
 
-  private async convertToPng(source: string): Promise<Uint8Array> {
+  private async convertToImage(source: string): Promise<Uint8Array> {
     const self = this;
     return new Promise<Uint8Array>((resolve, reject) => {
       tmp.file(function (err, tmpPath, fd, _/* cleanupCallback */) {
@@ -72,15 +78,15 @@ export class Processors {
     try {
       console.debug('Call image processor');
       //make sure url is defined. once the setting gets reset to default, an empty string will be returned by settings
-      const pngData = await this.convertToPng(source);
-      const blob = new Blob([ pngData ], {'type': 'image/png'});
+      const imageData = await this.convertToImage(source);
+      const blob = new Blob([ imageData ], {'type': this.imageMimeType.get(this.plugin.settings.imageFormat)});
       const url = window.URL || window.webkitURL;
       const blobUrl = url.createObjectURL(blob);
       const img = document.createElement('img');
       img.src = blobUrl;
       el.appendChild(img);
     } catch (errMessage) {
-      console.error('convert to png error', errMessage);
+      console.error('convert to image error', errMessage);
       const pre = document.createElement('pre');
       const code = document.createElement('code');
       pre.appendChild(code);
