@@ -1,9 +1,9 @@
 {
   "id": "obsidian-graphviz",
-  "name": "Obsidian Graphviz",
+  "name": "Graphviz",
   "version": "1.0.5",
   "minAppVersion": "0.11.5",
-  "description": "Render Graphviz Diagrams",
+  "description": "Render Diagrams, directed and undirected and radial and circular graphs",
   "author": "Feng Peng",
   "authorUrl": "https://QAMichaelPeng.github.io",
   "isDesktopOnly": true
