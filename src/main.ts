@@ -1,6 +1,7 @@
 import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, GraphvizSettings, GraphvizSettingsTab } from './setting';
 import { Processors } from './processors';
+import { Suggesters } from './suggesters';
 
 // Remember to rename these classes and interfaces!
 
@@ -13,6 +14,7 @@ export default class GraphvizPlugin extends Plugin {
     await this.loadSettings();
     this.addSettingTab(new GraphvizSettingsTab(this));
     const processors = new Processors(this);
+    const suggesters = new Suggesters(this);
     const d3Sources = ['https://d3js.org/d3.v5.min.js',
       'https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js',
       'https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js'];
@@ -31,6 +33,8 @@ export default class GraphvizPlugin extends Plugin {
         default:
           this.registerMarkdownCodeBlockProcessor('dot', processors.imageProcessor.bind(processors));
       }
+
+      this.registerEditorSuggest(new Suggesters(this.app, this));
     });
   }
 
