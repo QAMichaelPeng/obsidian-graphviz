@@ -22,7 +22,7 @@ export class Processors {
     return new Promise<Uint8Array>((resolve, reject) => {
       const cmdPath = this.plugin.settings.dotPath;
       const imageFormat = this.plugin.settings.imageFormat;
-      const parameters = [ `-T${imageFormat}`, sourceFile ];
+      const parameters = [ `-T${imageFormat}`, `-Gbgcolor=transparent`, `-Gstylesheet=obs-gviz.css`, sourceFile ];
 
       console.debug(`Starting dot process ${cmdPath}, ${parameters}`);
       const dotProcess = spawn(cmdPath, parameters);
