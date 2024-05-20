@@ -58,6 +58,14 @@ results in:
 
 ![](doc/asset/image/example.png)
 
+```yaml
+    ```dot
+    graph anundirectedgraph {
+      layout=neato;
+      a -- b -- c;
+    }
+    ```
+```
 
 ## Installation
 
