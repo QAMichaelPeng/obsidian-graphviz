@@ -75,6 +75,9 @@ export class Processors {
   }
 
   public async imageProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): Promise<void> {
+    const stringBeforeBrace = source.split("{", 1)[0]?.trim() || "";
+    const wordsBeforeBrace = stringBeforeBrace.split();
+
     try {
       console.debug('Call image processor');
       //make sure url is defined. once the setting gets reset to default, an empty string will be returned by settings
@@ -83,7 +86,8 @@ export class Processors {
       const url = window.URL || window.webkitURL;
       const blobUrl = url.createObjectURL(blob);
       const img = document.createElement('img');
-      img.src = blobUrl;
+      img.setAttribute("class", "graphviz " + wordsBeforeBrace.join(" "));
+      img.setAttribute("src", blobUrl);
       el.appendChild(img);
     } catch (errMessage) {
       console.error('convert to image error', errMessage);
@@ -97,10 +101,15 @@ export class Processors {
   
   public async d3graphvizProcessor(source: string, el: HTMLElement, _: MarkdownPostProcessorContext): Promise<void> {
     console.debug('Call d3graphvizProcessor');
+
+    const stringBeforeBrace = source.split("{", 1)[0]?.trim() || "";
+    const wordsBeforeBrace = stringBeforeBrace.split();
+
     const div = document.createElement('div');
     const graphId = 'd3graph_' + createHash('md5').update(source).digest('hex').substring(0, 6);
     div.setAttr('id', graphId);
     div.setAttr('style', 'text-align: center');
+    div.setAttr('class', 'graphviz ' + wordsBeforeBrace.join(" "));
     el.appendChild(div);
     const script = document.createElement('script');
     // graphviz(graphId).renderDot(source); => does not work, ideas how to use it?
