@@ -19,13 +19,18 @@ export class Processors {
     ]);
 
   private async writeDotFile(sourceFile: string): Promise<Uint8Array> {
-    return new Promise<Uint8Array>((resolve, reject) => {
-      const cmdPath = this.plugin.settings.dotPath;
-      const imageFormat = this.plugin.settings.imageFormat;
-      const parameters = [ `-T${imageFormat}`, `-Gbgcolor=transparent`, `-Gstylesheet=obs-gviz.css`, sourceFile ];
 
-      console.debug(`Starting dot process ${cmdPath}, ${parameters}`);
-      const dotProcess = spawn(cmdPath, parameters);
+    const LIKELY_LOCATIONS = `/usr/local/bin:/opt/homebrew/bin:/snap/bin:/bin:/usr/bin`;
+
+    return new Promise<Uint8Array>((resolve, reject) => {
+      const cmdPath = this.plugin.settings.dotPath.trim();
+      const imageFormat = this.plugin.settings.imageFormat;
+      const alreadyQualified = (cmdPath.contains("/") || cmdPath.contains('\\'));
+      const execPrefix = alreadyQualified ? [] : [ `/usr/bin/env`, `PATH=`+LIKELY_LOCATIONS ];
+      const execFull = execPrefix.concat([ cmdPath, `-T${imageFormat}`, `-Gbgcolor=transparent`, `-Gstylesheet=obs-gviz.css`, sourceFile ]);
+
+      console.debug(`Starting dot process [${execFull}]`);
+      const dotProcess = spawn(execFull[0], execFull.slice(1));
       const outData: Array<Uint8Array> = [];
       let errData = '';
 
@@ -37,14 +42,16 @@ export class Processors {
       });
       dotProcess.stdin.end();
       dotProcess.on('exit', function (code) {
-        if (code !== 0) {
-          reject(`"${cmdPath} ${parameters}" failed, error code: ${code}, stderr: ${errData}`);
-        } else {
+        if (code == 0) {
           resolve(Buffer.concat(outData));
+	} else if (code == 127) {
+          reject(`spawn [${execFull}] failed, stderr: ${errData}. Check the dot file path is correct.`);
+        } else {
+          reject(`exit code: ${code}, stderr: ${errData}`);
         }
       });
       dotProcess.on('error', function (err: Error) {
-        reject(`"${cmdPath} ${parameters}" failed, ${err}`);
+        reject(`spawn [${execFull}] failed, ${err}`);
       });
     });
   }
