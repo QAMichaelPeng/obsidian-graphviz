@@ -3,13 +3,7 @@
   border: 1px solid red;
 }
 
-/* temporary hack until SVG loads CSS */
 .theme-dark .block-language-dot img.graphviz {
-  filter:
-    drop-shadow( 2px  2px 2px var(--text-on-accent))
-    drop-shadow(-2px  2px 2px var(--text-on-accent))
-    drop-shadow( 2px -2px 2px var(--text-on-accent))
-    drop-shadow(-2px -2px 2px var(--text-on-accent))
-  ;
+  filter: invert(100%);
 }
 
